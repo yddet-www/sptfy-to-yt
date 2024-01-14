@@ -1,8 +1,8 @@
 from SpotAPI import *
 
 def run():
-    clientCreds()
-    print(getToken())
+    playlist_url = input("Insert spotify playlist link:")
+    print(get_playlist(playlist_url))
     
 if __name__ == '__main__':
     run()
