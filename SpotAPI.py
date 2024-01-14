@@ -1,10 +1,15 @@
 import requests
 import base64
+import os
+from dotenv import load_dotenv
 
+# Getting client ID and client secret from .env file
+load_dotenv()
+client_id = os.getenv("CLIENT_ID")
+client_secret = os.getenv("CLIENT_SECRET")
+
+# The Spotify token URL
 token_url = "https://accounts.spotify.com/api/token"
-
-client_id = "40c191875d7943ec88521e934d1d111d"
-client_secret = "020938a704b34ed49bacf15f3a6b1396"
 
 client_creds = f"{client_id}:{client_secret}"
 client_creds_b64 = base64.b64encode(client_creds.encode()).decode()
