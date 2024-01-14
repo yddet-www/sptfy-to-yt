@@ -2,3 +2,4 @@
 .env
 client_secrets.json
 __pycache__/SpotAPI.cpython-311.pyc
+*.pyc
