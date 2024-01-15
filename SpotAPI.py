@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 
 # Getting client ID and client secret from .env file
 load_dotenv()
-client_id = os.getenv("CLIENT_ID")
-client_secret = os.getenv("CLIENT_SECRET")
+client_id = os.getenv("SPTFY_CLIENT_ID")
+client_secret = os.getenv("SPTFY_CLIENT_SECRET")
 
 # The Spotify token URL
 token_url = "https://accounts.spotify.com/api/token"
@@ -23,20 +23,26 @@ data = {
     "grant_type": "client_credentials"
 }
 
+
+# Getting access token
 def getToken():
     response = requests.post(token_url, headers=headers, data=data)
 
-    if response.status_code == 200:
+    if(response.status_code == 200):
     # Extract the access token from the response
         access_token = response.json()["access_token"]
         return access_token
     else:
         print("Failed to get access token:", response.status_code, response.text)
 
+
+# Prints credentials
 def clientCreds():
     print("client_id: " + client_id)
     print("client_secret: " + client_secret)
     
+    
+# Returns playlist ID from its link
 def get_playlist_ID(url):
     if(url.find("https://open.spotify.com/playlist/") == -1 ): # if the URL is not legal, return -1
         return -1
@@ -44,6 +50,8 @@ def get_playlist_ID(url):
         playlist_id = url[34:56] # pulls the 22 length ID from the playlist URL
         return playlist_id
     
+    
+# Returns list of tracks in a playlist
 def get_playlist(url):
     playlist_id = get_playlist_ID(url)
     tracks_list = []
@@ -62,7 +70,7 @@ def get_playlist(url):
         
         if(response.status_code == 200):
             tracks = response.json()["items"]
-            track_names = [track["track"]["name"] for track in tracks]
+            track_names = [{"title": track["track"]["name"], "artists": [artist["name"] for artist in track["track"]["artists"]]} for track in tracks]
             tracks_list.extend(track_names)
             playlist_url = response.json()["next"]
         else:
