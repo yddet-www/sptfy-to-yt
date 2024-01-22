@@ -1,6 +1,7 @@
 import os
 from SpotAPI import *
 from YtAPI import *
+from Enqueue import *
 
 def run():
     # YOUTUBE QUOTA LIMIT RUINING EVERYTHING, SO WE MAKING A QUEUE
@@ -14,12 +15,12 @@ def run():
             artists = " ".join(track["artists"])
     
             key_word = f"{title} {artists}"
-            print(key_word)
         
-            with open("queue.txt", "a", encoding="utf-8") as file:
-                file.write(f"{key_word}\n")
+            append_to_file(key_word)
     else:
         print("isnt empty")
+    
+    print(read_lines())
     
     
     
