@@ -51,7 +51,7 @@ def get_playlist_ID(url):
         return playlist_id
     
     
-# Returns list of tracks in a playlist
+# Return tracks in list form given playlist URL
 def get_playlist(url):
     playlist_id = get_playlist_ID(url)
     tracks_list = []
@@ -78,5 +78,3 @@ def get_playlist(url):
             return None
     
     return tracks_list
-    
-    

@@ -9,7 +9,7 @@ credentials = None
 api_key = os.getenv("YT_API_KEY")
 
 
-# Getting the OAuth credentials
+# Getting the OAuth credentials, call this at the top of the code
 def yt_set_credentials():
     global credentials
     flow = InstalledAppFlow.from_client_secrets_file(
@@ -20,7 +20,7 @@ def yt_set_credentials():
     credentials = flow.credentials
 
 
-# Creating a playlist for user YT account
+# Creating a playlist for user YT account and returns it's ID
 def create_playlist(playlist_title="Made by yddet"):
     youtube = build("youtube", "v3", credentials=credentials)
     request = youtube.playlists().insert(
@@ -37,10 +37,10 @@ def create_playlist(playlist_title="Made by yddet"):
     )
 
     response = request.execute()
-    return response["id"] # This is the ID of the newly created playlist
+    return response["id"]
 
 
-# Searching videos by keyword
+# Searching videos by keyword and returns the first result's video ID
 def search_video(keyword):
     youtube = build("youtube", "v3", credentials=credentials)
     request = youtube.search().list(
@@ -50,7 +50,7 @@ def search_video(keyword):
     )
     
     response = request.execute()
-    return response["items"][0]["id"]["videoId"] # returns the first result's video ID
+    return response["items"][0]["id"]["videoId"]
 
 
 # Insert video into playlist by their IDs
