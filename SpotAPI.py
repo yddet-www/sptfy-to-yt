@@ -52,12 +52,11 @@ def get_playlist_ID(url):
     
     
 # Return tracks in list form given playlist URL
-def get_playlist(url):
-    playlist_id = get_playlist_ID(url)
+def get_playlist(playlist_id):
     tracks_list = []
     
     if(playlist_id == -1):
-        return "Invalid playlist link"
+        raise Exception("Invalid playlist URL")
     
     playlist_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
     
@@ -65,16 +64,15 @@ def get_playlist(url):
         "Authorization": f"Bearer {getToken()}"
     }
     
-    while playlist_url:
-        response = requests.get(playlist_url, headers=headers)
+    response = requests.get(playlist_url, headers=headers)
         
-        if(response.status_code == 200):
-            tracks = response.json()["items"]
-            track_names = [{"title": track["track"]["name"], "artists": [artist["name"] for artist in track["track"]["artists"]]} for track in tracks]
-            tracks_list.extend(track_names)
-            playlist_url = response.json()["next"]
-        else:
-            print("Failed to get playlist tracks:", response.status_code, response.text)
-            return None
+    if(response.status_code == 200):
+        tracks = response.json()["items"]
+        track_names = [{"title": track["track"]["name"], "artists": [artist["name"] for artist in track["track"]["artists"]]} for track in tracks]
+        tracks_list.extend(track_names)
+        playlist_url = response.json()["next"]
+    else:
+        print("Failed to get playlist tracks:", response.status_code, response.text)
+        return None
     
     return tracks_list
