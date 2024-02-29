@@ -21,3 +21,9 @@ class Playlist:
     
     def tracks_num(self):
         return len(self.tracks)
+    
+    def print(self):
+        string = f"Spotify ID: {self.src_playlist}, Youtube ID: {self.trgt_playlist}"
+        for i in self.tracks:
+            string = string + ", " + i
+        return string
