@@ -4,6 +4,7 @@ from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from dotenv import load_dotenv
 
+
 load_dotenv()
 credentials = None
 api_key = os.getenv("YT_API_KEY")
@@ -17,7 +18,7 @@ def yt_set_credentials():
     )
         
     flow.run_local_server(port=8080, prompt="consent")
-    credentials = flow.credentials
+    credentials = flow.credentials    
 
 
 # Creating a playlist for user YT account and returns it's ID
