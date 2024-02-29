@@ -20,12 +20,6 @@ def read_lines():
     file = open("queue.txt", "r", encoding="utf-8")
     return file.readlines()   
 
-def is_queue():
-    if(len(queue) > 0):
-        return True
-    else:
-        return False
-
 def run():
     # YOUTUBE QUOTA LIMIT RUINING EVERYTHING, SO WE MAKING A QUEUE
     
@@ -59,20 +53,20 @@ def run():
 
 # TESTING PURPOSES
 def test():
-    track_list = [s.strip() for s in read_lines()]
+    track_list = []
     sptfy = "0Gc1CHlpYK0KuGrt8nPK2V"
     yt = "PL4kxuDsb-ujr231Wim7vsAvOeZVxSGWLk"
-    playlist = Playlist(src_playlist=sptfy, trgt_playlist=yt, lst=track_list)
+                
+    for index, track in enumerate(get_playlist(sptfy)):
+        title = track["title"]
+        artists = " ".join(track["artists"])
     
-    today = datetime.now()
-    reset = None
+        key_word = f"{title} {artists}"
+        track_list.append(key_word)
+                
+    playlist = Playlist(sptfy, yt, track_list)
+    print(playlist.print())
     
-    if(reset == None):
-        reset = datetime.combine(today.date(), time(2, 0, 0)) + timedelta(days=1)
-    
-    print(today)
-    print(reset)
-    print(today > reset)
     
     
 def run_v2():
@@ -110,13 +104,16 @@ def run_v2():
     app_flag = True
     
     while(app_flag):          
-        menu = """==============================
+        menu = """
+==============================
 Choose the following options:
 1) Add to queue
 2) Process queue
-3) Check quota left
-4) Check next reset
-5) Exit
+3) Check queue
+4) Remove from queue
+5) Check quota left
+6) Check next reset
+7) Exit
 """
         response = input(menu)
         
@@ -126,7 +123,7 @@ Choose the following options:
                 
                 src = get_playlist_ID(url)
                 tracks = []
-                trgt = None
+                trgt = "PL4kxuDsb-ujr231Wim7vsAvOeZVxSGWLk" # later change to create_playlist()
                 
                 for index, track in enumerate(get_playlist(src)):
                     title = track["title"]
@@ -135,15 +132,36 @@ Choose the following options:
                     key_word = f"{title} {artists}"
                     tracks.append(key_word)
                 
-                print("Give the Youtube playlist link to store the result in (leave blank to create a new one:")
+                playlist = Playlist(src, trgt, tracks)
+                queue.append(playlist)
                 
             case "2":
                 print("You chose option 2")
                 
             case "3":
+                queue_index = len(queue)
+                print(f"You have {queue_index} items in queue")
+                
+                if(queue_index > 1):
+                    index = input(f"Which item (1 - {queue_index}) would you like to inspect? (enter E to exit)\n")
+                    if(index.isdigit() and int(index) > 0 and int(index) <= queue_index):
+                        print(queue[int(index) - 1].print())
+                
+                elif(queue_index == 1):
+                    index = input(f"Would you like to inspect the entry? (Y/N)\n")
+                    if(index == "Y" or index == "y"):
+                        print(queue[0].print())
+                
+                else:
+                    print("Your queue is empty. Please add a new entry before checking.")
+            
+            case "4":
+                print("You chose option 4")
+                
+            case "5":
                 print(f"You can transfer {quota} songs")
                 
-            case "4":
+            case "6":
                 print(f"Next quota reset is at {reset_time}")
                 
             case default:
