@@ -4,9 +4,10 @@ from YtAPI import *
 from PlaylistQ import *
 from datetime import datetime, date, time, timedelta
 
-# Track the YT API limits
+
+# Global variables
 reset_time = None
-quota = None
+quota = 0        # Limit of how many tracks that can be processed
 queue = []
 
 # Appened input onto queue text file
@@ -19,6 +20,17 @@ def append_to_file(line):
 def read_lines():
     file = open("queue.txt", "r", encoding="utf-8")
     return file.readlines()   
+
+def process_q(playlist_obj):
+    global quota
+    
+    track_list = playlist_obj.get_tracks()
+    yt_playlist = playlist_obj.get_src()
+    
+    while track_list and quota:
+        track_list.pop(0)
+        quota -= 1
+    return None;
 
 def run():
     # YOUTUBE QUOTA LIMIT RUINING EVERYTHING, SO WE MAKING A QUEUE
@@ -70,6 +82,8 @@ def test():
     
     
 def run_v2():
+    global reset_time, quota, queue
+    
     # First line of text file strictly for quota info
     
     # with open("queue.txt", "r+") as txt:
@@ -136,7 +150,21 @@ Choose the following options:
                 queue.append(playlist)
                 
             case "2":
-                print("You chose option 2")
+                queue_index = len(queue)
+                print(f"You have {queue_index} items in queue")
+                
+                if(queue_index > 1):
+                    index = input(f"Which item (1 - {queue_index}) would you like to process? (enter E to exit)\n")
+                    if(index.isdigit() and int(index) > 0 and int(index) <= queue_index):
+                        process_q(queue[int(index) - 1])
+                
+                elif(queue_index == 1):
+                    index = input(f"Would you like to process the entry? (Y/N)\n")
+                    if(index == "Y" or index == "y"):
+                        process_q(queue[0])
+                
+                else:
+                    print("Your queue is empty. Please add a new entry before processing.")
                 
             case "3":
                 queue_index = len(queue)
@@ -156,7 +184,23 @@ Choose the following options:
                     print("Your queue is empty. Please add a new entry before checking.")
             
             case "4":
-                print("You chose option 4")
+                queue_index = len(queue)
+                print(f"You have {queue_index} items in queue")
+                
+                if(queue_index > 1):
+                    index = input(f"Which item (1 - {queue_index}) would you like to delete? (enter E to exit)\n")
+                    if(index.isdigit() and int(index) > 0 and int(index) <= queue_index):
+                        del queue[int(index) - 1]
+                        print("Entry has been deleted")
+                
+                elif(queue_index == 1):
+                    index = input(f"Would you like to delete the entry? (Y/N)\n")
+                    if(index == "Y" or index == "y"):
+                        del queue[0]
+                        print("Entry has been deleted")
+                
+                else:
+                    print("Your queue is empty. Need an existing entry before deleting.")
                 
             case "5":
                 print(f"You can transfer {quota} songs")
