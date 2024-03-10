@@ -64,15 +64,19 @@ def get_playlist(playlist_id):
         "Authorization": f"Bearer {getToken()}"
     }
     
-    response = requests.get(playlist_url, headers=headers)
+    while True:
+        response = requests.get(playlist_url, headers=headers)
         
-    if(response.status_code == 200):
+        if(response.status_code != 200):    
+            print("Failed to get playlist tracks:", response.status_code, response.text)
+            return None
+        
         tracks = response.json()["items"]
         track_names = [{"title": track["track"]["name"], "artists": [artist["name"] for artist in track["track"]["artists"]]} for track in tracks]
         tracks_list.extend(track_names)
         playlist_url = response.json()["next"]
-    else:
-        print("Failed to get playlist tracks:", response.status_code, response.text)
-        return None
-    
+        
+        if not playlist_url:
+            break
+        
     return tracks_list
