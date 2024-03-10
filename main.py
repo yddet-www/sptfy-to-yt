@@ -16,10 +16,12 @@ def append_to_file(line):
     file.write(line + "\n")
     file.close()
     
+
 # Return a list of all lines in the queue text file
 def read_lines():
     file = open("queue.txt", "r", encoding="utf-8")
     return file.readlines()   
+
 
 def process_q(playlist_obj):
     global quota
@@ -28,9 +30,10 @@ def process_q(playlist_obj):
     yt_playlist = playlist_obj.get_src()
     
     while track_list and quota:
-        track_list.pop(0)
-        quota -= 1
+        print(track_list.pop(0))
+        # quota -= 1
     return None;
+
 
 def run():
     # YOUTUBE QUOTA LIMIT RUINING EVERYTHING, SO WE MAKING A QUEUE
@@ -78,7 +81,6 @@ def test():
                 
     playlist = Playlist(sptfy, yt, track_list)
     print(playlist.print())
-    
     
     
 def run_v2():
