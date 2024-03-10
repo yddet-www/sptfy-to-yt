@@ -30,9 +30,9 @@ def process_q(playlist_obj):
     yt_playlist = playlist_obj.get_src()
     
     while track_list and quota:
-        print(track_list.pop(0))
-        # quota -= 1
-    return None;
+        vid_id = search_video(track_list.pop(0))
+        insert_vid_to_playlist(yt_playlist, vid_id)
+        quota -= 1
 
 
 def run():
@@ -80,7 +80,7 @@ def test():
         track_list.append(key_word)
                 
     playlist = Playlist(sptfy, yt, track_list)
-    print(playlist.print())
+    print(playlist.toString())
     
     
 def run_v2():
@@ -175,12 +175,12 @@ Choose the following options:
                 if(queue_index > 1):
                     index = input(f"Which item (1 - {queue_index}) would you like to inspect? (enter E to exit)\n")
                     if(index.isdigit() and int(index) > 0 and int(index) <= queue_index):
-                        print(queue[int(index) - 1].print())
+                        print(queue[int(index) - 1].toString())
                 
                 elif(queue_index == 1):
                     index = input(f"Would you like to inspect the entry? (Y/N)\n")
                     if(index == "Y" or index == "y"):
-                        print(queue[0].print())
+                        print(queue[0].toString())
                 
                 else:
                     print("Your queue is empty. Please add a new entry before checking.")
