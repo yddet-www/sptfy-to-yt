@@ -1,5 +1,3 @@
-import os
-
 class Playlist:
 
     def __init__(self, src_playlist, trgt_playlist, lst):
