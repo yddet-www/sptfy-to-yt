@@ -1,4 +1,6 @@
 import os
+import time
+from googleapiclient.errors import HttpError
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -57,18 +59,33 @@ def search_video(keyword):
 # Insert video into playlist by their IDs
 def insert_vid_to_playlist(playlist_id, video_id):
     youtube = build("youtube", "v3", credentials=credentials)
-
-    request = youtube.playlistItems().insert(
-        part="snippet,id",
-        body={
-          "snippet": {
-            "playlistId": playlist_id,
-            "resourceId": {
-              "kind": "youtube#video",
-              "videoId": video_id
-            }
-          }
-        }
-    )
     
-    response = request.execute()
+    max_retries = 5
+    retry_count = 0
+    backoff_time = 1  # In seconds
+    
+    while retry_count < max_retries:
+        try:
+            request = youtube.playlistItems().insert(
+                part="snippet,id",
+                body={
+                    "snippet": {
+                        "playlistId": playlist_id,
+                        "resourceId": {
+                            "kind": "youtube#video",
+                            "videoId": video_id
+                        }
+                    }
+                }
+            )
+            response = request.execute()
+            return None
+        except HttpError as e:
+            if e.resp.status == 409 and 'SERVICE_UNAVAILABLE' in str(e):
+                retry_count += 1
+                print(f"Attempt {retry_count} failed. Retrying in {backoff_time} seconds...")
+                time.sleep(backoff_time)
+                backoff_time *= 2  # Exponential backoff
+            else:
+                raise
+    raise Exception("Failed to add the song to the playlist after multiple retries.")
