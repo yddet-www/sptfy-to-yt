@@ -14,7 +14,7 @@ def process_q(playlist_obj, index):
     global quota, queue
     
     track_list = playlist_obj.get_tracks()
-    yt_playlist = playlist_obj.get_src()
+    yt_playlist = playlist_obj.get_trgt()
     
     while track_list and quota:
         vid_id = search_video(track_list.pop(0))
@@ -25,23 +25,6 @@ def process_q(playlist_obj, index):
     if not track_list:
         del queue[index]    # checks whether all tracks are processed
                             # if yes, remove object from queue
-
-
-# TESTING PURPOSES
-def test():
-    track_list = []
-    sptfy = "0Gc1CHlpYK0KuGrt8nPK2V"
-    yt = "PL4kxuDsb-ujr231Wim7vsAvOeZVxSGWLk"
-                
-    for index, track in enumerate(get_playlist(sptfy)):
-        title = track["title"]
-        artists = " ".join(track["artists"])
-    
-        key_word = f"{title} {artists}"
-        track_list.append(key_word)
-                
-    playlist = Playlist(sptfy, yt, track_list)
-    print(playlist.toString())
     
     
 def run():
@@ -172,7 +155,8 @@ Choose the following options:
                 
             case default:
                 app_flag = False # end session
-                
+        
+        
     # SAVE SESSION
     with open("queue.txt", "w", encoding="utf-8") as txt: # UTF-8 is important btw
         new_quota = f"{quota};{reset_time}\n"
@@ -182,7 +166,7 @@ Choose the following options:
             session.append(queue.pop(0).toString() + "\n")
             
         txt.writelines(session)
-
+    
 
 if __name__ == "__main__":
     run()
