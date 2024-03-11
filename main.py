@@ -1,8 +1,7 @@
-import os
 from SpotAPI import *
 from YtAPI import *
 from PlaylistQ import *
-from datetime import datetime, date, time, timedelta
+from datetime import datetime, time, timedelta
 
 
 # Global variables
