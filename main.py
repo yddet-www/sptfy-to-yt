@@ -20,7 +20,6 @@ def process_q(playlist_obj, index):
         vid_id = search_video(track_list.pop(0))
         insert_vid_to_playlist(yt_playlist, vid_id)
         quota -= 1
-        track_list.pop(0)
     
     if not track_list:
         del queue[index]    # checks whether all tracks are processed
