@@ -15,7 +15,7 @@ Before jumping into the details of the code, I will go over the general process 
 <h2>Playlist class</h2>
 
 <p>
-This is a simple class file, holding the following variables
+This is a simple class module, holding the following variables
   <ul>
     <li>
       source: ID of Spotify playlist
