@@ -1,9 +1,12 @@
+<section>
 <h1>sptfy-to-yt</h1>
 
 <p>
 Welcome to my project! This is a simple Spotify to YouTube playlist converter built in Python as a console application that makes use of Spotify's web API and YouTube data API. I made this just as a side project for no particular reason other than to have options on which music platform I want to use. But since I've been using Spotify for a while now, my playlists have bloated in size and making a separate playlist on YouTube and searching the songs then adding them to it one by one can be a pain in the neck. And I know I could've used an existing app that does this and more, but where's the fun in that? Anyway, I'll walk you through how this console app works and the details of the code.
 </p>
+</section>
 
+<section>
 <h1>How it works</h2>
 
 <h2>Overview</h2>
@@ -36,3 +39,4 @@ This is a simple class module, holding the following variables
 </p>
 
 <h2>YouTube API module</h2>
+</section>
