@@ -35,7 +35,7 @@
   <h2>Spotify API module</h2>
 
   <p>
-    The module takes the client ID and client secret values from an environment file that I have omitted (for obvious reasons). If you would like to make use of this file app, be sure to create your own Spotify API and use your own client ID and secret values.
+    The module takes the client ID and client secret values from an environment file that I have omitted (for obvious reasons). If you would like to make use of this app or module, be sure to create your own Spotify API and use your own client ID and secret values.
   </p>
 
   <ul>
