@@ -31,4 +31,8 @@ This is a simple class module, holding the following variables
 
 <h2>Spotify API module</h2>
 
+<p>
+  
+</p>
+
 <h2>YouTube API module</h2>
