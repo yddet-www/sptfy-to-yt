@@ -3,6 +3,7 @@ from YtAPI import *
 from PlaylistQ import *
 from datetime import datetime, time, timedelta
 
+class _EarlyBreak(Exception): pass
 
 # Global variables
 reset_time = None
@@ -71,90 +72,100 @@ Choose the following options:
 """
         response = input(menu)
         
-        match response:
-            case "1":
-                url = input("Enter your Spotify playlist link:\n")
-                
-                src = get_playlist_ID(url)
-                trgt = create_playlist()
-                tracks = []
-                
-                for index, track in enumerate(get_playlist(src)):
-                    title = track["title"]
-                    artists = " ".join(track["artists"])
-    
-                    key_word = f"{title} {artists}"
-                    tracks.append(key_word)
-                
-                playlist = Playlist(src, trgt, tracks)
-                queue.append(playlist)
-                
-            case "2":
-                queue_index = len(queue)
-                print(f"You have {queue_index} items in queue")
-                
-                if(quota == 0):
-                    print(f"You have run out of quota. Please check back at {reset_time}")    
-                
-                elif(queue_index > 1):
-                    index = input(f"Which item (1 - {queue_index}) would you like to process? (enter E to exit)\n")
-                    if(index.isdigit() and int(index) > 0 and int(index) <= queue_index):
-                        process_q(queue[int(index) - 1], int(index) - 1)
-                        
-                
-                elif(queue_index == 1):
-                    index = input(f"Would you like to process the entry? (Y/N)\n")
-                    if(index == "Y" or index == "y"):
-                        process_q(queue[0], 0)
-                
-                else:
-                    print("Your queue is empty. Please add a new entry before processing.")
-                
-            case "3":
-                queue_index = len(queue)
-                print(f"You have {queue_index} items in queue")
-                
-                if(queue_index > 1):
-                    index = input(f"Which item (1 - {queue_index}) would you like to inspect? (enter E to exit)\n")
-                    if(index.isdigit() and int(index) > 0 and int(index) <= queue_index):
-                        print(queue[int(index) - 1].toString())
-                
-                elif(queue_index == 1):
-                    index = input(f"Would you like to inspect the entry? (Y/N)\n")
-                    if(index == "Y" or index == "y"):
-                        print(queue[0].toString())
-                
-                else:
-                    print("Your queue is empty. Please add a new entry before checking.")
-            
-            case "4":
-                queue_index = len(queue)
-                print(f"You have {queue_index} items in queue")
-                
-                if(queue_index > 1):
-                    index = input(f"Which item (1 - {queue_index}) would you like to delete? (enter E to exit)\n")
-                    if(index.isdigit() and int(index) > 0 and int(index) <= queue_index):
-                        del queue[int(index) - 1]
-                        print("Entry has been deleted")
-                
-                elif(queue_index == 1):
-                    index = input(f"Would you like to delete the entry? (Y/N)\n")
-                    if(index == "Y" or index == "y"):
-                        del queue[0]
-                        print("Entry has been deleted")
-                
-                else:
-                    print("Your queue is empty. Need an existing entry before deleting.")
-                
-            case "5":
-                print(f"You can transfer {quota} songs")
-                
-            case "6":
-                print(f"Next quota reset is at {reset_time}")
-                
-            case default:
-                app_flag = False # end session
+        try:
+            match response:
+                case "1":
+                    url = input("Enter your Spotify playlist link:\n")
+                    
+                    src = get_playlist_ID(url)                
+                    if(src == -1):
+                        print("Invalid playlist link")
+                        raise _EarlyBreak()
+                    
+                    if(not get_playlist(src)):
+                        print("Playlist is private")
+                        raise _EarlyBreak()
+                    
+                    # trgt = create_playlist()
+                    tracks = []
+                    
+                    for index, track in enumerate(get_playlist(src)):
+                        title = track["title"]
+                        artists = " ".join(track["artists"])
         
+                        key_word = f"{title} {artists}"
+                        tracks.append(key_word)
+                    
+                    playlist = Playlist(src, trgt, tracks)
+                    queue.append(playlist)
+                    
+                case "2":
+                    queue_index = len(queue)
+                    print(f"You have {queue_index} items in queue")
+                    
+                    if(quota == 0):
+                        print(f"You have run out of quota. Please check back at {reset_time}")    
+                    
+                    elif(queue_index > 1):
+                        index = input(f"Which item (1 - {queue_index}) would you like to process? (enter E to exit)\n")
+                        if(index.isdigit() and int(index) > 0 and int(index) <= queue_index):
+                            process_q(queue[int(index) - 1], int(index) - 1)
+                            
+                    
+                    elif(queue_index == 1):
+                        index = input(f"Would you like to process the entry? (Y/N)\n")
+                        if(index == "Y" or index == "y"):
+                            process_q(queue[0], 0)
+                    
+                    else:
+                        print("Your queue is empty. Please add a new entry before processing.")
+                    
+                case "3":
+                    queue_index = len(queue)
+                    print(f"You have {queue_index} items in queue")
+                    
+                    if(queue_index > 1):
+                        index = input(f"Which item (1 - {queue_index}) would you like to inspect? (enter E to exit)\n")
+                        if(index.isdigit() and int(index) > 0 and int(index) <= queue_index):
+                            print(queue[int(index) - 1].toString())
+                    
+                    elif(queue_index == 1):
+                        index = input(f"Would you like to inspect the entry? (Y/N)\n")
+                        if(index == "Y" or index == "y"):
+                            print(queue[0].toString())
+                    
+                    else:
+                        print("Your queue is empty. Please add a new entry before checking.")
+                
+                case "4":
+                    queue_index = len(queue)
+                    print(f"You have {queue_index} items in queue")
+                    
+                    if(queue_index > 1):
+                        index = input(f"Which item (1 - {queue_index}) would you like to delete? (enter E to exit)\n")
+                        if(index.isdigit() and int(index) > 0 and int(index) <= queue_index):
+                            del queue[int(index) - 1]
+                            print("Entry has been deleted")
+                    
+                    elif(queue_index == 1):
+                        index = input(f"Would you like to delete the entry? (Y/N)\n")
+                        if(index == "Y" or index == "y"):
+                            del queue[0]
+                            print("Entry has been deleted")
+                    
+                    else:
+                        print("Your queue is empty. Need an existing entry before deleting.")
+                    
+                case "5":
+                    print(f"You can transfer {quota} songs")
+                    
+                case "6":
+                    print(f"Next quota reset is at {reset_time}")
+                    
+                case default:
+                    app_flag = False # end session
+        except _EarlyBreak:
+            pass
         
     # SAVE SESSION
     with open("queue.txt", "w", encoding="utf-8") as txt: # UTF-8 is important btw
