@@ -56,7 +56,8 @@ def get_playlist(playlist_id):
     tracks_list = []
     
     if(playlist_id == -1):
-        raise Exception("Invalid playlist URL")
+        print("Invalid playlist URL")
+        return None
     
     playlist_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
     
