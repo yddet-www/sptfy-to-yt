@@ -86,7 +86,7 @@ Choose the following options:
                         print("Playlist is private")
                         raise _EarlyBreak()
                     
-                    # trgt = create_playlist()
+                    trgt = create_playlist()
                     tracks = []
                     
                     for index, track in enumerate(get_playlist(src)):
