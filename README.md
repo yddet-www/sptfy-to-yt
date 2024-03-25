@@ -52,6 +52,7 @@ The module takes the API key from an environment file that I have omitted (again
 > Taking a string as an argument (defaults to credit me), creates a public empty playlist in the user's YouTube account with the argument as its name and returns the newly created playlist's ID.
 
 > #### search_video(keyword)
+> 
 > Taking a keyword in the form of a string, perform a YouTube search and return the video ID of the first result.
 
 > #### insert_vid_to_playlist(playlist_id, video_id)
