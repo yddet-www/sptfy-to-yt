@@ -26,15 +26,12 @@ This is a simple class module, holding the following variables:
 The module takes the client ID and client secret values from an environment file that I have omitted (for obvious reasons). If you would like to make use of this app or module, be sure to create your own Spotify API and use your own client ID and secret values.
 
 > #### getToken()
-> 
 > This method returns the access token for the Spotify API, which will be used for other methods in this module.
 
 > #### get_playlist_ID(url)
-> 
 > This method takes a valid URL of a public Spotify playlist and returns its ID
 
 > ##### get_playlist(playlist_id)
-> 
 > Given a playlist ID as an argument, perform an API call that returns a list of dictionaries of all tracks and its respective artists as keys from the given playlist.
 >
 > In a single call, the response is limited to 100 tracks. However, the response will provide a value in "next" that helps to select the next 100 (if any) for that given playlist.
@@ -44,19 +41,15 @@ The module takes the client ID and client secret values from an environment file
 The module takes the API key from an environment file that I have omitted (again, for obvious reasons). If you would like to make use of this app or module, be sure to create your own YouTube API and use your own API key.
 
 > #### yt_set_credentials()
-> 
 > Gets the OAuth credentials, which is necessary for our method calls in this module. This will prompt the standard Google authentication page.
 
 > #### create_playlist(playlist_title="Made by yddet")
-> 
 > Taking a string as an argument (defaults to credit me), creates a public empty playlist in the user's YouTube account with the argument as its name and returns the newly created playlist's ID.
 
 > #### search_video(keyword)
-> 
 > Taking a keyword in the form of a string, perform a YouTube search and return the video ID of the first result.
 
 > #### insert_vid_to_playlist(playlist_id, video_id)
-> 
 > Taking the ID of a playlist and video as its arguments, insert the video into that playlist.
 >
 > I've implemented exception handling for the case when a "SERVICE_UNAVAILABLE" exception occurs. The exception will pause the process momentarily before retrying until a maximum number of tries elapses, before finally raising an error.
