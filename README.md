@@ -29,6 +29,7 @@ The module takes the client ID and client secret values from an environment file
 
 > ##### get_playlist(playlist_id)
 > Given a playlist ID as an argument, perform an API call that returns a list of dictionaries of all tracks and its respective artists as keys from the given playlist.
+>
 > In a single call, the response is limited to 100 tracks. However, the response will provide a value in "next" that helps to select the next 100 (if any) for that given playlist.
 
 ### YouTube API module
@@ -45,4 +46,5 @@ The module takes the API key from an environment file that I have omitted (again
 
 > #### insert_vid_to_playlist(playlist_id, video_id)
 > Taking the ID of a playlist and video as its arguments, insert the video into that playlist.
+>
 > I've implemented exception handling for the case when a "SERVICE_UNAVAILABLE" exception occurs. The exception will pause the process momentarily before retrying until a maximum number of tries elapses, before finally raising an error.
