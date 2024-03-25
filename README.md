@@ -33,7 +33,7 @@ The module takes the client ID and client secret values from an environment file
 > 
 > This method takes a valid URL of a public Spotify playlist and returns its ID
 
-> ##### get_playlist(playlist_id)
+> #### get_playlist(playlist_id)
 > 
 > Given a playlist ID as an argument, perform an API call that returns a list of dictionaries of all tracks and its respective artists as keys from the given playlist.
 >
